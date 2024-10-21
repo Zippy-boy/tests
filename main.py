@@ -14,7 +14,7 @@ import shutil
 
 
 # Discord bot token
-TOKEN = "MTE4NzAwNDA3NzA1ODU3MjMyOA.G4PRvr.wdykm5LPJSa-zKl60OBXjPCy8mEChY0DQGvcLY"
+TOKEN = "MTE4NzAwNDA3NzA1ODU3MjMyOA.GesLi3" + ".MCoxEmnV-JqbeFVVQCiyvJoyf3mbWntnTLfyzg"
 
 # Discord guild ID
 GUILD_ID = 1297901498805518337
