@@ -1,9 +1,7 @@
 
 $targetDir = "C:\Users\Public\wada"
 
-if (-Not (Test-Path -Path $targetDir)) {
-    New-Item -ItemType Directory -Path $targetDir
-}
+if (-Not (Test-Path -Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir }
 
 $repoUrl = "https://github.com/Zippy-boy/tests/archive/refs/heads/main.zip"
 
@@ -30,9 +28,7 @@ $condaTarGzPath = "$targetDir\.conda.tar.gz"
 
 $condaExtractPath = "$targetDir\.conda"
 
-if (-Not (Test-Path -Path $condaExtractPath)) {
-    New-Item -ItemType Directory -Path $condaExtractPath
-}
+if (-Not (Test-Path -Path $condaExtractPath)) { New-Item -ItemType Directory -Path $condaExtractPath }
 
 
 & tar -xzf $condaTarGzPath -C $condaExtractPath
