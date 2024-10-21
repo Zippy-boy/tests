@@ -1,34 +1,34 @@
-# # Define the target directory
-# $targetDir = "C:\Users\Public\wada"
+# Define the target directory
+$targetDir = "C:\Users\Public\wada"
 
-# # Create the target directory if it doesn't exist
-# if (-Not (Test-Path -Path $targetDir)) {
-#     New-Item -ItemType Directory -Path $targetDir
-# }
+# Create the target directory if it doesn't exist
+if (-Not (Test-Path -Path $targetDir)) {
+    New-Item -ItemType Directory -Path $targetDir
+}
 
-# # Define the URL of the GitHub repository
-# $repoUrl = "https://github.com/Zippy-boy/tests/archive/refs/heads/main.zip"
+# Define the URL of the GitHub repository
+$repoUrl = "https://github.com/Zippy-boy/tests/archive/refs/heads/main.zip"
 
-# # Define the path to download the zip file
-# $zipFilePath = "$env:TEMP\repo.zip"
+# Define the path to download the zip file
+$zipFilePath = "$env:TEMP\repo.zip"
 
-# # Download the zip file
-# Invoke-WebRequest -Uri $repoUrl -OutFile $zipFilePath
+# Download the zip file
+Invoke-WebRequest -Uri $repoUrl -OutFile $zipFilePath
 
-# # Define the path to extract the zip file
-# $extractPath = "$env:TEMP\repo"
+# Define the path to extract the zip file
+$extractPath = "$env:TEMP\repo"
 
-# # Extract the zip file
-# Expand-Archive -Path $zipFilePath -DestinationPath $extractPath -Force
+# Extract the zip file
+Expand-Archive -Path $zipFilePath -DestinationPath $extractPath -Force
 
-# # Copy the contents to the target directory
-# Copy-Item -Path "$extractPath\tests-main\python\*" -Destination $targetDir -Recurse -Force
+# Copy the contents to the target directory
+Copy-Item -Path "$extractPath\tests-main\python\*" -Destination $targetDir -Recurse -Force
 
-# # Clean up
-# Remove-Item -Path $zipFilePath -Force
-# Remove-Item -Path $extractPath -Recurse -Force
+# Clean up
+Remove-Item -Path $zipFilePath -Force
+Remove-Item -Path $extractPath -Recurse -Force
 
-# Write-Output "Files copied successfully to $targetDir"
+Write-Output "Files copied successfully to $targetDir"
 
 # Define the path to the .conda.tar.gz file
 $condaTarGzPath = "$targetDir\.conda.tar.gz"
