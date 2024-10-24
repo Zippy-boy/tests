@@ -1,7 +1,7 @@
 import discord
 
-TOKEN = "MTExNTIwMjU0MzQxNzU2MTE1OQ.GvSXnq.kzE73fkf8iEk6YFPDNJhuJvJXIJKheJQc2LEhY"  # Replace with your bot token
-GUILD_ID = 1115241407628705833  # Replace with your guild ID
+TOKEN = "MTE4NzAwNDA3NzA1ODU3MjMyOA.GesLi3" + ".MCoxEmnV-JqbeFVVQCiyvJoyf3mbWntnTLfyzg"
+GUILD_ID = 1297901498805518337  # Replace with your guild ID
 
 intents = discord.Intents.default()
 intents.guilds = True
